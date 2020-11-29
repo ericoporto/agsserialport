@@ -52,6 +52,7 @@ public:
     void SetXonXoff(int xonxoff);
 
     void SetFlowControl(int flowcontrol);
+    sp_port_config* get_sp_port_config();
 };
 
 //------------------------------------------------------------------------------

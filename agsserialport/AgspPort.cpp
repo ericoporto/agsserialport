@@ -1,63 +1,138 @@
+#include <cstring>
 #include "AgspPort.h"
 #include "AgspSaneCheck.h"
 
 int AgspPort::Open(int mode) {
-    return 0;
+    if(_port == nullptr) return eAGSP_ERR_NULLPTR;
+    return sp_open(_port, (enum sp_mode) mode);
 }
 
 int AgspPort::Close() {
-    return 0;
+    if(_port == nullptr) return eAGSP_ERR_NULLPTR;
+    return sp_close(_port);
 }
 
 const char *AgspPort::GetName() {
-    return nullptr;
+    if(_port == nullptr) return nullptr;
+    return sp_get_port_name(_port);
 }
 
 const char *AgspPort::GetDescription() {
-    return nullptr;
+    if(_port == nullptr) return nullptr;
+    return sp_get_port_description(_port);
 }
 
 int AgspPort::GetTransport() {
-    return 0;
+    if(_port == nullptr) return eAGSP_ERR_NULLPTR;
+    return sp_get_port_transport(_port);
 }
 
-void AgspPort::SetConfig(AgspPortConfig *agspPortConfig) {
-
+int AgspPort::SetConfig(AgspPortConfig *agspPortConfig) {
+    if(_port == nullptr) return eAGSP_ERR_NULLPTR;
+    return sp_set_config(_port, agspPortConfig->get_sp_port_config());
 }
 
-AgspPortConfig *AgspPort::GetConfig() {
-    return nullptr;
+AgspPortConfig* AgspPort::GetConfig() {
+    return new AgspPortConfig(_port);
 }
 
 const char *AgspPort::Read(int count) {
+    if(_port == nullptr) return nullptr;
+    if(count < 0) return nullptr;
+    char* buffer = new char[count+1];
+    if(sp_nonblocking_read(_port, buffer, count) == SP_OK)
+    {
+        return buffer;
+    }
+    delete[] buffer;
     return nullptr;
 }
 
 int AgspPort::Write(const char *buffer) {
-    return 0;
+    if(_port == nullptr) return eAGSP_ERR_NULLPTR;
+    if(buffer == nullptr) return eAGSP_ERR_NULLPTR;
+    size_t size = strlen(buffer);
+    return sp_nonblocking_write(_port, buffer, size);
 }
 
 int AgspPort::GetWaitingBytesRead() {
-    return 0;
+    if(_port == nullptr) return eAGSP_ERR_NULLPTR;
+    return sp_input_waiting(_port);
 }
 
 int AgspPort::GetWaitingBytesWrite() {
-    return 0;
+    if(_port == nullptr) return eAGSP_ERR_NULLPTR;
+    return sp_output_waiting(_port);
 }
 
 int AgspPort::Flush(int buffers) {
-    return 0;
+    if(_port == nullptr) return eAGSP_ERR_NULLPTR;
+    return sp_flush(_port, (enum sp_buffer) buffers);
 }
 
+int AgspPort::SetBaudrate(int baudrate) {
+    if(_port == nullptr) return eAGSP_ERR_NULLPTR;
+    return sp_set_baudrate(_port, baudrate);
+}
+
+int AgspPort::SetBits(int bits) {
+    if(_port == nullptr) return eAGSP_ERR_NULLPTR;
+    return sp_set_bits(_port, bits);
+}
+
+int AgspPort::SetParity(int parity) {
+    if(_port == nullptr) return eAGSP_ERR_NULLPTR;
+    return sp_set_parity(_port, (enum sp_parity) parity);
+}
+
+int AgspPort::SetStopBits(int stopbits) {
+    if(_port == nullptr) return eAGSP_ERR_NULLPTR;
+    return sp_set_stopbits(_port, stopbits);
+}
+
+int AgspPort::SetFlowControl(int flowcontrol) {
+    if(_port == nullptr) return eAGSP_ERR_NULLPTR;
+    return sp_set_flowcontrol(_port, (enum sp_flowcontrol) flowcontrol);
+}
+
+
 AgspPort::AgspPort(const char *portname) {
-  id = -1;
-  _port = nullptr;
+    id = -1;
+    _port = nullptr;
     /* Call sp_get_port_by_name() to find the port. The port
-   * pointer will be updated to refer to the port found. */
+    * pointer will be updated to refer to the port found. */
     do_check(sp_get_port_by_name(portname, &_port));
 }
 
 AgspPort::~AgspPort() {
-
+    if(_port != nullptr)
+    {
+        void* discard;
+        if(sp_get_port_handle(_port, discard) == SP_OK)
+        {
+            sp_close(_port);
+        }
+        discard = nullptr;
+        sp_free_port(_port);
+    }
 }
 
+
+
+//------------------------------------------------------------------------------
+
+extern IAGSEngine* engine;
+
+AgspPortInterface AgspPort_Interface;
+AgspPortReader AgspPort_Reader;
+
+const char* AgspPortInterface::name = "SP_Port";
+
+//------------------------------------------------------------------------------
+
+int AgspPortInterface::Dispose(const char *address, bool force) {
+    delete ((AgspPort*)address);
+    AgspPort* agspPort = ((AgspPort*)address);
+    agspPort = nullptr;
+    return (1);
+}

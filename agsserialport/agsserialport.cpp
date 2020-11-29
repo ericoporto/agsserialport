@@ -298,9 +298,9 @@ AgspPortConfig* AgspPort_GetConfig(AgspPort* self)
   return agspPortCfg;
 }
 
-void AgspPort_SetConfig(AgspPort* self, AgspPortConfig* agspPortConfig)
+int AgspPort_SetConfig(AgspPort* self, AgspPortConfig* agspPortConfig)
 {
-  self->SetConfig(agspPortConfig);
+    return self->SetConfig(agspPortConfig);
 } 
 
 const char * AgspPort_Read(AgspPort* self, int count)
@@ -328,6 +328,30 @@ int AgspPort_Flush(AgspPort* self, int buffers)
   return self->Flush(buffers);
 }
 
+int AgspPort_SetBaudrate(AgspPort* self, int baudrate)
+{
+    return self->SetBaudrate(baudrate);
+}
+
+int AgspPort_SetBits(AgspPort* self, int bits)
+{
+    return self->SetBits(bits);
+}
+
+int AgspPort_SetParity(AgspPort* self, int parity)
+{
+    return self->SetParity(parity);
+}
+
+int AgspPort_SetStopBits(AgspPort* self, int stopbits)
+{
+    return self->SetStopBits(stopbits);
+}
+
+int AgspPort_SetFlowControl(AgspPort* self, int flowcontrol)
+{
+    return self->SetFlowControl(flowcontrol);
+}
 
 // -- end AgspPort
 
@@ -373,6 +397,12 @@ void AGS_EngineStartup(IAGSEngine *lpEngine)
     engine->RegisterScriptFunction("SP_Port::get_WaitingBytesRead", (void*)AgspPort_get_WaitingBytesRead);
     engine->RegisterScriptFunction("SP_Port::get_WaitingBytesWrite", (void*)AgspPort_get_WaitingBytesWrite);
     engine->RegisterScriptFunction("SP_Port::Flush^1", (void*)AgspPort_Flush);
+
+    engine->RegisterScriptFunction("SP_Port::SetBaudrate^1", (void*)AgspPort_SetBaudrate);
+    engine->RegisterScriptFunction("SP_Port::SetBits^1", (void*)AgspPort_SetBits);
+    engine->RegisterScriptFunction("SP_Port::SetParity^1", (void*)AgspPort_SetParity);
+    engine->RegisterScriptFunction("SP_Port::SetStopBits^1", (void*)AgspPort_SetStopBits);
+    engine->RegisterScriptFunction("SP_Port::SetFlowControl^1", (void*)AgspPort_SetFlowControl);
 
     engine->RegisterScriptFunction("SP_PortConfig::Create^1", (void*)AgspPortCfg_Create);
     engine->RegisterScriptFunction("SP_PortConfig::SetFlowControl^1", (void*)AgspPortCfg_SetFlowControl);

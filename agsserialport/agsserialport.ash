@@ -209,7 +209,7 @@ builtin managed struct SP_Port
   import static SP_Port* Create(String portname); // $AUTOCOMPLETESTATICONLY$ 
   /// Open the specified serial port.
   import AGSP_ReturnType Open(AGSP_ModeType mode);
-  /// Close the specified serial port.
+  /// Close the specified serial port. Port must be open.
   import AGSP_ReturnType Close();
   /// Get the name of a port. The name returned is whatever is normally used to refer to a port on the current operating system.
   import readonly attribute String Name;
@@ -217,25 +217,36 @@ builtin managed struct SP_Port
   /// Get a description for a port, to present to end user.
   import readonly attribute String Description;
   import String get_Description(); // $AUTOCOMPLETEIGNORE$
-  /// Get the transport type used by a port.
+  /// Get the transport type used by a port. Port must be open.
   import readonly attribute AGSP_TransportType Transport;
   import AGSP_TransportType get_Transport(); // $AUTOCOMPLETEIGNORE$
-  /// Get Port configuration.
+  /// Get Port configuration. Port must be open.
   import SP_PortConfig* GetConfig();
-  /// Set Port configuration.
-  import void SetConfig(SP_PortConfig* config);
-  /// Read bytes from the specified serial port, without blocking.
+  /// Set Port configuration. Port must be open.
+  import AGSP_ReturnType SetConfig(SP_PortConfig* config);
+  /// Read bytes from the specified serial port, without blocking. Port must be open.
   import String Read(int count);
-  /// Write bytes to the specified serial port, without blocking.
+  /// Write bytes to the specified serial port, without blocking. Port must be open.
   import AGSP_ReturnType Write(String buffer);
-  /// Gets the number of bytes waiting in the input buffer.
+  /// Gets the number of bytes waiting in the input buffer. Port must be open.
   import readonly attribute AGSP_ReturnType WaitingBytesRead;
   import AGSP_ReturnType get_WaitingBytesRead(); // $AUTOCOMPLETEIGNORE$
-  /// Gets the number of bytes waiting in the output buffer.
+  /// Gets the number of bytes waiting in the output buffer. Port must be open.
   import readonly attribute AGSP_ReturnType WaitingBytesWrite;
   import AGSP_ReturnType get_WaitingBytesWrite(); // $AUTOCOMPLETEIGNORE$
-  /// Flush serial port buffers. Data in the selected buffer(s) is discarded.
+  /// Flush serial port buffers. Data in the selected buffer(s) is discarded. Port must be open.
   import AGSP_ReturnType Flush(AGSP_BufferType buffers);
+  
+  /// Set port Baudrate. Port must be open.
+  import AGSP_ReturnType SetBaudrate(int baudrate);
+  /// Set port Bits. Port must be open.
+  import AGSP_ReturnType SetBits(int bits);
+  /// Set port Parity. Port must be open.
+  import AGSP_ReturnType SetParity(AGSP_ParityType parity);
+  /// Set port Stop Bits. Port must be open.
+  import AGSP_ReturnType SetStopBits(int StopBits);
+  /// Sets the RTS, CTS, DTR, DSR and XON/XOFF as necessary for the specified port flow control type. Port must be open.
+  import AGSP_ReturnType SetFlowControl(AGSP_FlowControlType flowcontrol);
 };
 
 builtin managed struct AGSP

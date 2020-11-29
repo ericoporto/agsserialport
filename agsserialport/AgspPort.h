@@ -30,7 +30,7 @@ public :
 
     int GetTransport();
 
-    void SetConfig(AgspPortConfig* agspPortConfig);
+    int SetConfig(AgspPortConfig* agspPortConfig);
     AgspPortConfig* GetConfig();
 
     const char * Read(int count);
@@ -40,6 +40,12 @@ public :
     int GetWaitingBytesWrite();
 
     int Flush(int buffers);
+
+    int SetBaudrate(int baudrate);
+    int SetBits(int bits);
+    int SetParity(int parity);
+    int SetStopBits(int stopbits);
+    int SetFlowControl(int flowcontrol);
 };
 
 //------------------------------------------------------------------------------

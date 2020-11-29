@@ -142,3 +142,25 @@ AgspPortConfig::~AgspPortConfig() {
         sp_free_config(_port_cfg);
     }
 }
+
+sp_port_config *AgspPortConfig::get_sp_port_config() {
+    return _port_cfg;
+}
+
+//------------------------------------------------------------------------------
+
+extern IAGSEngine* engine;
+
+AgspPortConfigInterface AgspPortConfig_Interface;
+AgspPortConfigReader AgspPortConfig_Reader;
+
+const char* AgspPortConfigInterface::name = "SP_PortConfig";
+
+//------------------------------------------------------------------------------
+
+int AgspPortConfigInterface::Dispose(const char *address, bool force) {
+    delete ((AgspPortConfig*)address);
+    AgspPortConfig* agspPortConfig = ((AgspPortConfig*)address);
+    agspPortConfig = nullptr;
+    return (1);
+}
