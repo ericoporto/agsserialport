@@ -19,6 +19,7 @@
 #include "plugin/agsplugin.h"
 
 #include "agsserialport_ash.h"
+#include "agsp_globalvars.h"
 #include "AgsNumberInterface.h"
 #include "AgspPortConfig.h"
 #include "AgspPort.h"
@@ -290,14 +291,14 @@ int AgspPort_get_Transport(AgspPort* self)
   return self->GetTransport();
 }
 
-AgspPortConfig* AgspPort_get_Config(AgspPort* self)
+AgspPortConfig* AgspPort_GetConfig(AgspPort* self)
 {
   AgspPortConfig* agspPortCfg = new AgspPortConfig();
   agspPortCfg->id = engine->RegisterManagedObject(agspPortCfg, &AgspPortConfig_Interface);
   return agspPortCfg;
 }
 
-void AgspPort_set_Config(AgspPort* self, AgspPortConfig* agspPortConfig)
+void AgspPort_SetConfig(AgspPort* self, AgspPortConfig* agspPortConfig)
 {
   self->SetConfig(agspPortConfig);
 } 
@@ -365,8 +366,8 @@ void AGS_EngineStartup(IAGSEngine *lpEngine)
     engine->RegisterScriptFunction("SP_Port::get_Name", (void*)AgspPort_get_Name);
     engine->RegisterScriptFunction("SP_Port::get_Description", (void*)AgspPort_get_Description);
     engine->RegisterScriptFunction("SP_Port::get_Transport", (void*)AgspPort_get_Transport);
-    engine->RegisterScriptFunction("SP_Port::get_Config", (void*)AgspPort_get_Config);
-    engine->RegisterScriptFunction("SP_Port::set_Config", (void*)AgspPort_set_Config);
+    engine->RegisterScriptFunction("SP_Port::GetConfig^0", (void*)AgspPort_GetConfig);
+    engine->RegisterScriptFunction("SP_Port::SetConfig^1", (void*)AgspPort_SetConfig);
     engine->RegisterScriptFunction("SP_Port::Read^1", (void*)AgspPort_Read);
     engine->RegisterScriptFunction("SP_Port::Write^1", (void*)AgspPort_Write);
     engine->RegisterScriptFunction("SP_Port::get_WaitingBytesRead", (void*)AgspPort_get_WaitingBytesRead);

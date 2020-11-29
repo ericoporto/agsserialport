@@ -220,10 +220,10 @@ builtin managed struct SP_Port
   /// Get the transport type used by a port.
   import readonly attribute AGSP_TransportType Transport;
   import AGSP_TransportType get_Transport(); // $AUTOCOMPLETEIGNORE$
-  /// Port configuration.
-  import attribute SP_PortConfig* Config;
-  import SP_PortConfig* get_Config(); // $AUTOCOMPLETEIGNORE$
-  import void set_Config(SP_PortConfig* config); // $AUTOCOMPLETEIGNORE$
+  /// Get Port configuration.
+  import SP_PortConfig* GetConfig();
+  /// Set Port configuration.
+  import void SetConfig(SP_PortConfig* config);
   /// Read bytes from the specified serial port, without blocking.
   import String Read(int count);
   /// Write bytes to the specified serial port, without blocking.
