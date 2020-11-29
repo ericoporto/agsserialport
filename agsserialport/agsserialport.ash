@@ -13,6 +13,8 @@ enum AGSP_ReturnType
 	eAGSP_ERR_MEM = -3,
 	/// The requested operation is not supported by this system or device.
 	eAGSP_ERR_SUPP = -4
+	/// The requested operation was executed in an uninitialized or null object;
+	eAGSP_ERR_NULLPTR = -10
 };
 
 /// Port access modes. 
@@ -195,10 +197,9 @@ builtin managed struct SP_PortConfig
   import attribute AGSP_XonXoffType XonXoff;
   import AGSP_XonXoffType get_XonXoff(); // $AUTOCOMPLETEIGNORE$
   import void set_XonXoff(AGSP_XonXoffType xonxoff); // $AUTOCOMPLETEIGNORE$
-  /// The flow control type in a port configuration.
-  import attribute AGSP_FlowControlType FlowControl;
-  import AGSP_FlowControlType get_FlowControl(); // $AUTOCOMPLETEIGNORE$
-  import void set_FlowControl(AGSP_FlowControlType flowcontrol); // $AUTOCOMPLETEIGNORE$
+
+  /// Sets the RTS, CTS, DTR, DSR and XON/XOFF as necessary for the specified flow control type.
+  import void SetFlowControl(AGSP_FlowControlType flowcontrol); 
 };
 
 /// structure representing a serial port.

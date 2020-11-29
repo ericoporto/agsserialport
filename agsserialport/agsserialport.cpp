@@ -17,8 +17,9 @@
 #endif
 
 #include "plugin/agsplugin.h"
-#include "agsserialport_ash.h"
 
+#include "agsserialport_ash.h"
+#include "AgsNumberInterface.h"
 #include "AgspPortConfig.h"
 #include "AgspPort.h"
 
@@ -144,13 +145,7 @@ typedef unsigned char uint8;
 // Engine interface
 
 //------------------------------------------------------------------------------
-int inline ToAgsBool(bool b){
-    return b ? 1 : 0;
-}
 
-bool inline ToNormalBool(int bi){
-    return bi!=0 ? true : false;
-}
 
 #define STRINGIFY(s) STRINGIFY_X(s)
 #define STRINGIFY_X(s) #s
@@ -254,12 +249,7 @@ void AgspPortCfg_set_XonXoff(AgspPortConfig* self, int xonxoff)
   self->SetXonXoff(xonxoff);
 } //-- XonXoff
 
-int AgspPortCfg_get_FlowControl(AgspPortConfig* self)
-{
-  return self->GetFlowControl();
-}
-
-void AgspPortCfg_set_FlowControl(AgspPortConfig* self, int flowcontrol)
+void AgspPortCfg_SetFlowControl(AgspPortConfig* self, int flowcontrol)
 {
   self->SetFlowControl(flowcontrol);
 } //-- FlowControl
@@ -368,10 +358,41 @@ void AGS_EngineStartup(IAGSEngine *lpEngine)
 
     engine->RegisterScriptFunction("AGSP::get_PortNamesCount", (void*)AGSP_get_PortNamesCount);
     engine->RegisterScriptFunction("AGSP::geti_PortNames", (void*)AGSP_geti_PortNames);
+
     engine->RegisterScriptFunction("SP_Port::Create^1", (void*)AgspPort_Create);
     engine->RegisterScriptFunction("SP_Port::AgspPort_Open^1", (void*)AgspPort_Open);
+    engine->RegisterScriptFunction("SP_Port::AgspPort_Close^0", (void*)AgspPort_Close);
+    engine->RegisterScriptFunction("SP_Port::get_Name", (void*)AgspPort_get_Name);
+    engine->RegisterScriptFunction("SP_Port::get_Description", (void*)AgspPort_get_Description);
+    engine->RegisterScriptFunction("SP_Port::get_Transport", (void*)AgspPort_get_Transport);
+    engine->RegisterScriptFunction("SP_Port::get_Config", (void*)AgspPort_get_Config);
+    engine->RegisterScriptFunction("SP_Port::set_Config", (void*)AgspPort_set_Config);
+    engine->RegisterScriptFunction("SP_Port::Read^1", (void*)AgspPort_Read);
+    engine->RegisterScriptFunction("SP_Port::Write^1", (void*)AgspPort_Write);
+    engine->RegisterScriptFunction("SP_Port::get_WaitingBytesRead", (void*)AgspPort_get_WaitingBytesRead);
+    engine->RegisterScriptFunction("SP_Port::get_WaitingBytesWrite", (void*)AgspPort_get_WaitingBytesWrite);
+    engine->RegisterScriptFunction("SP_Port::Flush^1", (void*)AgspPort_Flush);
 
-
+    engine->RegisterScriptFunction("SP_PortConfig::Create^1", (void*)AgspPortCfg_Create);
+    engine->RegisterScriptFunction("SP_PortConfig::SetFlowControl^1", (void*)AgspPortCfg_SetFlowControl);
+    engine->RegisterScriptFunction("SP_PortConfig::get_Baudrate", (void*)AgspPortCfg_get_Baudrate);
+    engine->RegisterScriptFunction("SP_PortConfig::set_Baudrate", (void*)AgspPortCfg_set_Baudrate);
+    engine->RegisterScriptFunction("SP_PortConfig::get_Bits", (void*)AgspPortCfg_get_Bits);
+    engine->RegisterScriptFunction("SP_PortConfig::set_Bits", (void*)AgspPortCfg_set_Bits);
+    engine->RegisterScriptFunction("SP_PortConfig::get_Parity", (void*)AgspPortCfg_get_Parity);
+    engine->RegisterScriptFunction("SP_PortConfig::set_Parity", (void*)AgspPortCfg_set_Parity);
+    engine->RegisterScriptFunction("SP_PortConfig::get_StopBits", (void*)AgspPortCfg_get_StopBits);
+    engine->RegisterScriptFunction("SP_PortConfig::set_StopBits", (void*)AgspPortCfg_set_StopBits);
+    engine->RegisterScriptFunction("SP_PortConfig::get_RTS", (void*)AgspPortCfg_get_RTS);
+    engine->RegisterScriptFunction("SP_PortConfig::set_RTS", (void*)AgspPortCfg_set_RTS);
+    engine->RegisterScriptFunction("SP_PortConfig::get_CTS", (void*)AgspPortCfg_get_CTS);
+    engine->RegisterScriptFunction("SP_PortConfig::set_CTS", (void*)AgspPortCfg_set_CTS);
+    engine->RegisterScriptFunction("SP_PortConfig::get_DTR", (void*)AgspPortCfg_get_DTR);
+    engine->RegisterScriptFunction("SP_PortConfig::set_DTR", (void*)AgspPortCfg_set_DTR);
+    engine->RegisterScriptFunction("SP_PortConfig::get_DSR", (void*)AgspPortCfg_get_DSR);
+    engine->RegisterScriptFunction("SP_PortConfig::set_DSR", (void*)AgspPortCfg_set_DSR);
+    engine->RegisterScriptFunction("SP_PortConfig::get_XonXoff", (void*)AgspPortCfg_get_XonXoff);
+    engine->RegisterScriptFunction("SP_PortConfig::set_XonXoff", (void*)AgspPortCfg_set_XonXoff);
 }
 
 //------------------------------------------------------------------------------

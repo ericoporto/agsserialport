@@ -1,7 +1,11 @@
 #include "AgspPortConfig.h"
 
 int AgspPortConfig::GetBaudrate() {
-    return 0;
+    int value = 0;
+    if(_port_cfg == nullptr) return eAGSP_ERR_NULLPTR;
+    int error_value = sp_get_config_baudrate(_port_cfg, &value);
+    if(error_value != SP_OK) return error_value;
+    return value;
 }
 
 void AgspPortConfig::SetBaudrate(int baudrate) {
@@ -9,7 +13,11 @@ void AgspPortConfig::SetBaudrate(int baudrate) {
 }
 
 int AgspPortConfig::GetBits() {
-    return 0;
+    int value = 0;
+    if(_port_cfg == nullptr) return eAGSP_ERR_NULLPTR;
+    int error_value = sp_get_config_bits(_port_cfg, &value);
+    if(error_value != SP_OK) return error_value;
+    return value;
 }
 
 void AgspPortConfig::SetBits(int bits) {
@@ -17,7 +25,11 @@ void AgspPortConfig::SetBits(int bits) {
 }
 
 int AgspPortConfig::GetParity() {
-    return 0;
+    int value = 0;
+    if(_port_cfg == nullptr) return eAGSP_ERR_NULLPTR;
+    int error_value = sp_get_config_parity(_port_cfg, (enum sp_parity*) &value);
+    if(error_value != SP_OK) return error_value;
+    return value;
 }
 
 void AgspPortConfig::SetParity(int parity) {
@@ -25,7 +37,11 @@ void AgspPortConfig::SetParity(int parity) {
 }
 
 int AgspPortConfig::GetStopBits() {
-    return 0;
+    int value = 0;
+    if(_port_cfg == nullptr) return eAGSP_ERR_NULLPTR;
+    int error_value = sp_get_config_stopbits(_port_cfg, &value);
+    if(error_value != SP_OK) return error_value;
+    return value;
 }
 
 void AgspPortConfig::SetStopBits(int stopbits) {
@@ -33,7 +49,11 @@ void AgspPortConfig::SetStopBits(int stopbits) {
 }
 
 int AgspPortConfig::GetRTS() {
-    return 0;
+    int value = 0;
+    if(_port_cfg == nullptr) return eAGSP_ERR_NULLPTR;
+    int error_value = sp_get_config_rts(_port_cfg, (enum sp_rts*) &value);
+    if(error_value != SP_OK) return error_value;
+    return value;
 }
 
 void AgspPortConfig::SetRTS(int rts) {
@@ -41,7 +61,11 @@ void AgspPortConfig::SetRTS(int rts) {
 }
 
 int AgspPortConfig::GetCTS() {
-    return 0;
+    int value = 0;
+    if(_port_cfg == nullptr) return eAGSP_ERR_NULLPTR;
+    int error_value = sp_get_config_cts(_port_cfg, (enum sp_cts*) &value);
+    if(error_value != SP_OK) return error_value;
+    return value;
 }
 
 void AgspPortConfig::SetCTS(int cts) {
@@ -49,7 +73,11 @@ void AgspPortConfig::SetCTS(int cts) {
 }
 
 int AgspPortConfig::GetDTR() {
-    return 0;
+    int value = 0;
+    if(_port_cfg == nullptr) return eAGSP_ERR_NULLPTR;
+    int error_value = sp_get_config_dtr(_port_cfg, (enum sp_dtr*) &value);
+    if(error_value != SP_OK) return error_value;
+    return value;
 }
 
 void AgspPortConfig::SetDTR(int dtr) {
@@ -57,7 +85,11 @@ void AgspPortConfig::SetDTR(int dtr) {
 }
 
 int AgspPortConfig::GetDSR() {
-    return 0;
+    int value = 0;
+    if(_port_cfg == nullptr) return eAGSP_ERR_NULLPTR;
+    int error_value = sp_get_config_dsr(_port_cfg, (enum sp_dsr*) &value);
+    if(error_value != SP_OK) return error_value;
+    return value;
 }
 
 void AgspPortConfig::SetDSR(int dsr) {
@@ -65,17 +97,26 @@ void AgspPortConfig::SetDSR(int dsr) {
 }
 
 int AgspPortConfig::GetXonXoff() {
-    return 0;
+    int value = 0;
+    if(_port_cfg == nullptr) return eAGSP_ERR_NULLPTR;
+    int error_value = sp_get_config_xon_xoff(_port_cfg, (enum sp_xonxoff*) &value);
+    if(error_value != SP_OK) return error_value;
+    return value;
 }
 
 void AgspPortConfig::SetXonXoff(int xonxoff) {
 
 }
 
-int AgspPortConfig::GetFlowControl() {
-    return 0;
+void AgspPortConfig::SetFlowControl(int flowcontrol) {
+
 }
 
-void AgspPortConfig::SetFlowControl(int flowcontrol) {
+AgspPortConfig::AgspPortConfig() {
+    id = -1;
+    _port_cfg = nullptr;
+}
+
+AgspPortConfig::~AgspPortConfig() {
 
 }

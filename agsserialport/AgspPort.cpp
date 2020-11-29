@@ -47,3 +47,12 @@ int AgspPort::GetWaitingBytesWrite() {
 int AgspPort::Flush(int buffers) {
     return 0;
 }
+
+AgspPort::AgspPort(const char *portname) {
+  id = -1;
+  _port = nullptr;
+}
+
+AgspPort::~AgspPort() {
+
+}

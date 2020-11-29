@@ -15,11 +15,12 @@
 #include "AgspPortConfig.h"
 
 class AgspPort {
-    public :
+private:
+    struct sp_port * _port;
+public :
     int id;
-    AgspPort(const char * portname) {
-        id = -1;
-    }
+    AgspPort(const char * portname);
+    ~AgspPort();
     int Open(int mode);
     int Close();
 

@@ -23,6 +23,9 @@ include_directories(../ags/Common/)
 # include_directories(.)
 
 add_library(agsserialport SHARED
+    agsserialport/AgsNumberInterface.h
+    agsserialport/SerializationHelper.h
+    agsserialport/SerializationHelper.cpp
     agsserialport/agsserialport_ash.h
     agsserialport/agsserialport.cpp
     agsserialport/AgspPort.h

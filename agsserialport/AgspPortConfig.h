@@ -13,12 +13,16 @@
 #include "plugin/agsplugin.h"
 #include "libserialport.h"
 
+#define eAGSP_ERR_NULLPTR -10
+
 class AgspPortConfig {
-    public :
+private:
+    struct sp_port_config * _port_cfg;
+public:
     int id;
-    AgspPortConfig() {
-        id = -1;
-    }
+    AgspPortConfig();
+    ~AgspPortConfig();
+
     int GetBaudrate();
     void SetBaudrate(int baudrate);
 
@@ -46,7 +50,6 @@ class AgspPortConfig {
     int GetXonXoff();
     void SetXonXoff(int xonxoff);
 
-    int GetFlowControl();
     void SetFlowControl(int flowcontrol);
 };
 
