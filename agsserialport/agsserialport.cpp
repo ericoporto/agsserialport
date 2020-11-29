@@ -358,6 +358,7 @@ void AgspPort_UpdatePortNames()
     enum sp_return result = sp_list_ports(&port_list);
 
     if (result != SP_OK) {
+        if(port_list != nullptr) sp_free_port_list(port_list);
         return;
     }
     int i;
