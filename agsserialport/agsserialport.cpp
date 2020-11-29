@@ -1,4 +1,4 @@
-// dllmain.cpp : Defines the entry point for the DLL application.
+// agsserialport.cpp : Defines the entry point for the DLL application.
 
 #pragma region Defines_and_Includes
 
