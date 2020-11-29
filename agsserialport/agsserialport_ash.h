@@ -255,6 +255,8 @@ const char *agsserialport_ash =
 "   \r\n"
 " builtin managed struct AGSP  \r\n"
 " {  \r\n"
+" /// Refreshes Port Names list  \r\n"
+" import static void UpdatePortNames();  \r\n"
 " /// Get the number of serial ports.  \r\n"
 " import static attribute int PortNamesCount; // $AUTOCOMPLETESTATICONLY$   \r\n"
 " import static int get_PortNamesCount(); // $AUTOCOMPLETEIGNORE$  \r\n"

@@ -251,6 +251,8 @@ builtin managed struct SP_Port
 
 builtin managed struct AGSP
 {
+  /// Refreshes Port Names list
+  import static void UpdatePortNames();
   /// Get the number of serial ports.
   import static attribute int PortNamesCount; // $AUTOCOMPLETESTATICONLY$ 
   import static int get_PortNamesCount(); // $AUTOCOMPLETEIGNORE$

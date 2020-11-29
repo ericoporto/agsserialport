@@ -17,28 +17,18 @@
 #endif
 
 #include "plugin/agsplugin.h"
-
 #include "agsserialport_ash.h"
 #include "agsp_globalvars.h"
 #include "AgsNumberInterface.h"
 #include "AgspPortConfig.h"
 #include "AgspPort.h"
-
 #include <cstring>
+#include <string>
+#include <vector>
 
 #if defined(BUILTIN_PLUGINS)
 namespace agsserialport {
 #endif
-
-typedef unsigned char uint8;
-
-
-#if !AGS_PLATFORM_OS_WINDOWS
-#define min(x,y) (((x) < (y)) ? (x) : (y))
-#define max(x,y) (((x) > (y)) ? (x) : (y))
-#endif
-
-#define abs(a)             ((a)<0 ? -(a) : (a))
 
 #pragma endregion //Defines_and_Includes
 
@@ -142,7 +132,6 @@ typedef unsigned char uint8;
 
 // ***** Run time *****
 
-
 // Engine interface
 
 //------------------------------------------------------------------------------
@@ -162,98 +151,98 @@ AgspPortConfig* AgspPortCfg_Create()
 
 int AgspPortCfg_get_Baudrate(AgspPortConfig* self)
 {
-  return self->GetBaudrate();
+    return self->GetBaudrate();
 }
 
 void AgspPortCfg_set_Baudrate(AgspPortConfig* self, int baudrate)
 {
-  self->SetBaudrate(baudrate);
-} //--
+    self->SetBaudrate(baudrate);
+} //-- Baudrate
 
 int AgspPortCfg_get_Bits(AgspPortConfig* self)
 {
-  return self->GetBits();
+    return self->GetBits();
 }
 
 void AgspPortCfg_set_Bits(AgspPortConfig* self, int bits)
 {
-  self->SetBits(bits);
-} //--
+    self->SetBits(bits);
+} //-- Bits
 
 int AgspPortCfg_get_Parity(AgspPortConfig* self)
 {
-  return self->GetParity();
+    return self->GetParity();
 }
 
 void AgspPortCfg_set_Parity(AgspPortConfig* self, int parity)
 {
-  self->SetParity(parity);
-} //--
+    self->SetParity(parity);
+} //-- Parity
 
 int AgspPortCfg_get_StopBits(AgspPortConfig* self)
 {
-  return self->GetStopBits();
+    return self->GetStopBits();
 }
 
 void AgspPortCfg_set_StopBits(AgspPortConfig* self, int stopbits)
 {
-  self->SetStopBits(stopbits);
-} //--
+    self->SetStopBits(stopbits);
+} //-- StopBits
 
 int AgspPortCfg_get_RTS(AgspPortConfig* self)
 {
-  return self->GetRTS();
+    return self->GetRTS();
 }
 
 void AgspPortCfg_set_RTS(AgspPortConfig* self, int rts)
 {
-  self->SetRTS(rts);
+    self->SetRTS(rts);
 } //-- RTS
 
 int AgspPortCfg_get_CTS(AgspPortConfig* self)
 {
-  return self->GetCTS();
+    return self->GetCTS();
 }
 
 void AgspPortCfg_set_CTS(AgspPortConfig* self, int cts)
 {
-  self->SetCTS(cts);
+    self->SetCTS(cts);
 } //-- CTS
 
 int AgspPortCfg_get_DTR(AgspPortConfig* self)
 {
-  return self->GetDTR();
+    return self->GetDTR();
 }
 
 void AgspPortCfg_set_DTR(AgspPortConfig* self, int dtr)
 {
-  self->SetDTR(dtr);
+    self->SetDTR(dtr);
 } //-- DTR
 
 int AgspPortCfg_get_DSR(AgspPortConfig* self)
 {
-  return self->GetDSR();
+    return self->GetDSR();
 }
 
 void AgspPortCfg_set_DSR(AgspPortConfig* self, int dsr)
 {
-  self->SetDSR(dsr);
+    self->SetDSR(dsr);
 } //-- DSR
 
 int AgspPortCfg_get_XonXoff(AgspPortConfig* self)
 {
-  return self->GetXonXoff();
+    return self->GetXonXoff();
 }
 
 void AgspPortCfg_set_XonXoff(AgspPortConfig* self, int xonxoff)
 {
-  self->SetXonXoff(xonxoff);
+    self->SetXonXoff(xonxoff);
 } //-- XonXoff
 
 void AgspPortCfg_SetFlowControl(AgspPortConfig* self, int flowcontrol)
 {
-  self->SetFlowControl(flowcontrol);
-} //-- FlowControl
+    self->SetFlowControl(flowcontrol);
+}
 
 // -- end AgspPortConfig
 
@@ -268,34 +257,34 @@ AgspPort* AgspPort_Create(const char * portname)
 
 int AgspPort_Open(AgspPort* self, int mode)
 {
-  return self->Open(mode);
+    return self->Open(mode);
 }
 
 int AgspPort_Close(AgspPort* self)
 {
-  return self->Close();
+    return self->Close();
 }
 
 const char * AgspPort_get_Name(AgspPort* self)
 {
-  return engine->CreateScriptString(self->GetName());
+    return engine->CreateScriptString(self->GetName());
 }
 
 const char * AgspPort_get_Description(AgspPort* self)
 {
-  return engine->CreateScriptString(self->GetDescription());
+    return engine->CreateScriptString(self->GetDescription());
 }
 
 int AgspPort_get_Transport(AgspPort* self)
 {
-  return self->GetTransport();
+    return self->GetTransport();
 }
 
 AgspPortConfig* AgspPort_GetConfig(AgspPort* self)
 {
-  AgspPortConfig* agspPortCfg = new AgspPortConfig();
-  agspPortCfg->id = engine->RegisterManagedObject(agspPortCfg, &AgspPortConfig_Interface);
-  return agspPortCfg;
+    AgspPortConfig* agspPortCfg = self->GetConfig();
+    agspPortCfg->id = engine->RegisterManagedObject(agspPortCfg, &AgspPortConfig_Interface);
+    return agspPortCfg;
 }
 
 int AgspPort_SetConfig(AgspPort* self, AgspPortConfig* agspPortConfig)
@@ -305,27 +294,27 @@ int AgspPort_SetConfig(AgspPort* self, AgspPortConfig* agspPortConfig)
 
 const char * AgspPort_Read(AgspPort* self, int count)
 {
-  return engine->CreateScriptString(self->Read(count));
+    return engine->CreateScriptString(self->Read(count));
 }
 
 int AgspPort_Write(AgspPort* self, const char * buffer)
 {
-  return self->Write(buffer);
+    return self->Write(buffer);
 }
 
 int AgspPort_get_WaitingBytesRead(AgspPort* self)
 {
-  return self->GetWaitingBytesRead();
+    return self->GetWaitingBytesRead();
 }
 
 int AgspPort_get_WaitingBytesWrite(AgspPort* self)
 {
-  return self->GetWaitingBytesWrite();
+    return self->GetWaitingBytesWrite();
 }
 
 int AgspPort_Flush(AgspPort* self, int buffers)
 {
-  return self->Flush(buffers);
+    return self->Flush(buffers);
 }
 
 int AgspPort_SetBaudrate(AgspPort* self, int baudrate)
@@ -357,14 +346,43 @@ int AgspPort_SetFlowControl(AgspPort* self, int flowcontrol)
 
 // -- begin AGSP
 
+std::vector<std::string> _agsp_port_names;
+
+void AgspPort_UpdatePortNames()
+{
+    _agsp_port_names.clear();
+
+    struct sp_port **port_list;
+    // Call sp_list_ports() to get the ports. The port_list
+    // pointer will be updated to refer to the array created.
+    enum sp_return result = sp_list_ports(&port_list);
+
+    if (result != SP_OK) {
+        return;
+    }
+    int i;
+    for (i = 0; port_list[i] != NULL; i++) {
+        struct sp_port *port = port_list[i];
+
+        // Get the name of the port.
+        char *port_name = sp_get_port_name(port);
+        std::string pname = port_name;
+        _agsp_port_names.push_back(pname);
+    }
+    // Free the array created by sp_list_ports().
+    sp_free_port_list(port_list);
+    // Note that this will also free all the sp_port structures it points to
+}
+
 int AGSP_get_PortNamesCount()
 {
-    return 0;
+    return _agsp_port_names.size();
 }
 
 const char* AGSP_geti_PortNames(int i)
 {
-    return engine->CreateScriptString("");
+    if(i < 0 || i >= _agsp_port_names.size()) return nullptr;
+    return engine->CreateScriptString(_agsp_port_names[i].c_str());
 }
 
 // -- end AGSP
@@ -372,17 +390,22 @@ const char* AGSP_geti_PortNames(int i)
 
 void AGS_EngineStartup(IAGSEngine *lpEngine)
 {
-	engine = lpEngine;
+    engine = lpEngine;
 
-	// Make sure it's got the version with the features we need
-	if (engine->version < MIN_ENGINE_VERSION)
-		engine->AbortGame("Plugin needs engine version " STRINGIFY(MIN_ENGINE_VERSION) " or newer.");
+    // Make sure it's got the version with the features we need
+    if (engine->version < MIN_ENGINE_VERSION)
+    {
+        engine->AbortGame("Plugin needs engine version " STRINGIFY(MIN_ENGINE_VERSION) " or newer.");
+    }
+
+    AgspPort_UpdatePortNames();
 
     engine->AddManagedObjectReader(AgspPortInterface::name, &AgspPort_Reader);
     engine->AddManagedObjectReader(AgspPortConfigInterface::name, &AgspPortConfig_Reader);
 
     engine->RegisterScriptFunction("AGSP::get_PortNamesCount", (void*)AGSP_get_PortNamesCount);
     engine->RegisterScriptFunction("AGSP::geti_PortNames", (void*)AGSP_geti_PortNames);
+    engine->RegisterScriptFunction("AGSP::UpdatePortNames^0", (void*)AgspPort_UpdatePortNames);
 
     engine->RegisterScriptFunction("SP_Port::Create^1", (void*)AgspPort_Create);
     engine->RegisterScriptFunction("SP_Port::AgspPort_Open^1", (void*)AgspPort_Open);
@@ -397,7 +420,6 @@ void AGS_EngineStartup(IAGSEngine *lpEngine)
     engine->RegisterScriptFunction("SP_Port::get_WaitingBytesRead", (void*)AgspPort_get_WaitingBytesRead);
     engine->RegisterScriptFunction("SP_Port::get_WaitingBytesWrite", (void*)AgspPort_get_WaitingBytesWrite);
     engine->RegisterScriptFunction("SP_Port::Flush^1", (void*)AgspPort_Flush);
-
     engine->RegisterScriptFunction("SP_Port::SetBaudrate^1", (void*)AgspPort_SetBaudrate);
     engine->RegisterScriptFunction("SP_Port::SetBits^1", (void*)AgspPort_SetBits);
     engine->RegisterScriptFunction("SP_Port::SetParity^1", (void*)AgspPort_SetParity);
@@ -434,11 +456,6 @@ void AGS_EngineShutdown()
 }
 
 //------------------------------------------------------------------------------
-
-
-//------------------------------------------------------------------------------
-
-
 //..............................................................................
 
 
