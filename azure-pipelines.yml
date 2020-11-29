@@ -1,0 +1,114 @@
+# C/C++ with GCC
+# Build your C/C++ project with GCC using make.
+# Add steps that publish test results, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/apps/c-cpp/gcc
+
+trigger:
+  branches:
+    include:
+      - refs/heads/*
+      - refs/tags/*
+
+strategy:
+  matrix:
+    linux:
+      imageName: 'ubuntu-16.04'
+    mac:
+      imageName: 'macos-10.14'
+    windows:
+      imageName: 'vs2017-win2016'
+
+pool:
+  vmImage: $(imageName)
+
+steps:
+# Linux
+- bash: |
+    version=3.18
+    build=1
+    mkdir ~/temp
+    pushd ~/temp
+    wget https://cmake.org/files/v$version/cmake-$version.$build-Linux-x86_64.sh 
+    sudo mkdir /opt/cmake
+    sudo sh cmake-$version.$build-Linux-x86_64.sh --prefix=/opt/cmake
+    popd
+    sudo ln -s /opt/cmake/bin/cmake /usr/bin/cmake    
+    pushd ..
+    git clone https://github.com/adventuregamestudio/ags.git
+    pushd ags
+    git checkout release-3.5.0
+    popd
+    popd
+    mkdir build && cd build && cmake .. && make
+  condition: eq( variables['Agent.OS'], 'Linux' )
+  displayName: 'make'
+
+- task: CopyFiles@2
+  condition: eq( variables['Agent.OS'], 'Linux' )
+  inputs:
+    sourceFolder: '$(Build.SourcesDirectory)/agsserialport'
+    contents: 'libagsserialport.so'
+    targetFolder: $(Build.ArtifactStagingDirectory)
+
+# macOS
+- bash: |
+    curl -fLSs "https://github.com/Kitware/CMake/releases/download/v3.14.5/cmake-3.14.5-Darwin-x86_64.tar.gz" | bsdtar -f - -xvzC /Applications --strip-components 1
+    pushd ..
+    git clone https://github.com/adventuregamestudio/ags.git
+    pushd ags
+    git checkout release-3.5.0
+    popd
+    popd
+    mkdir build && cd build && cmake .. && make
+  condition: eq( variables['Agent.OS'], 'Darwin' )
+  displayName: 'make'
+
+- task: CopyFiles@2
+  condition: eq( variables['Agent.OS'], 'Darwin' )
+  inputs:
+    sourceFolder: '$(Build.SourcesDirectory)/build/'
+    contents: 'libagsserialport.dylib'
+    targetFolder: $(Build.ArtifactStagingDirectory)
+
+# Windows
+- bash: |
+    pushd ..
+    git clone https://github.com/adventuregamestudio/ags.git
+    pushd ags
+    git checkout release-3.5.0
+    popd
+    popd
+    
+  condition: eq( variables['Agent.OS'], 'Windows_NT' )
+  displayName: 'prepareTask'
+
+- task: VSBuild@1
+  condition: eq( variables['Agent.OS'], 'Windows_NT' )
+  inputs:
+    solution: 'agsserialport.sln'
+    platform: x86
+    configuration: Release
+
+- task: CopyFiles@2
+  condition: eq( variables['Agent.OS'], 'Windows_NT' )
+  inputs:
+    sourceFolder: '$(Build.SourcesDirectory)/Release'
+    contents: 'agsserialport.dll'
+    targetFolder: $(Build.ArtifactStagingDirectory)
+
+- bash: |
+    echo "##vso[task.setvariable variable=tagname]$(git describe --tags $(git rev-list --tags --max-count=1))"
+# Upload to Github Release
+- task: GithubRelease@0
+  displayName: 'Create GitHub Release'
+  inputs:
+    tagSource: 'auto'
+    tag: $(tagname)
+    assetUploadMode: 'replace'
+    action: 'edit'
+    gitHubConnection: agsserialport
+    repositoryName: ericoporto/agsserialport
+    assets: |
+         $(Build.ArtifactStagingDirectory)/*.dll
+         $(Build.ArtifactStagingDirectory)/*.so
+         $(Build.ArtifactStagingDirectory)/*.dylib
