@@ -16,7 +16,7 @@
 
 class AgspPort {
 private:
-    struct sp_port * _port;
+    sp_port* _port;
 public :
     int id;
     AgspPort(const char * portname);

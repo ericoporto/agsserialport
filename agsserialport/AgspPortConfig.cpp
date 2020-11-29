@@ -1,4 +1,5 @@
 #include "AgspPortConfig.h"
+#include "AgspSaneCheck.h"
 
 int AgspPortConfig::GetBaudrate() {
     int value = 0;
@@ -9,7 +10,8 @@ int AgspPortConfig::GetBaudrate() {
 }
 
 void AgspPortConfig::SetBaudrate(int baudrate) {
-
+    if(_port_cfg == nullptr) return;
+    sp_set_config_baudrate(_port_cfg, baudrate);
 }
 
 int AgspPortConfig::GetBits() {
@@ -21,7 +23,8 @@ int AgspPortConfig::GetBits() {
 }
 
 void AgspPortConfig::SetBits(int bits) {
-
+    if(_port_cfg == nullptr) return;
+    sp_set_config_bits(_port_cfg, bits);
 }
 
 int AgspPortConfig::GetParity() {
@@ -33,7 +36,8 @@ int AgspPortConfig::GetParity() {
 }
 
 void AgspPortConfig::SetParity(int parity) {
-
+    if(_port_cfg == nullptr) return;
+    sp_set_config_parity(_port_cfg, (enum sp_parity) parity);
 }
 
 int AgspPortConfig::GetStopBits() {
@@ -45,7 +49,8 @@ int AgspPortConfig::GetStopBits() {
 }
 
 void AgspPortConfig::SetStopBits(int stopbits) {
-
+    if(_port_cfg == nullptr) return;
+    sp_set_config_stopbits(_port_cfg, stopbits);
 }
 
 int AgspPortConfig::GetRTS() {
@@ -57,7 +62,8 @@ int AgspPortConfig::GetRTS() {
 }
 
 void AgspPortConfig::SetRTS(int rts) {
-
+    if(_port_cfg == nullptr) return;
+    sp_set_config_rts(_port_cfg, (enum sp_rts) rts);
 }
 
 int AgspPortConfig::GetCTS() {
@@ -69,7 +75,8 @@ int AgspPortConfig::GetCTS() {
 }
 
 void AgspPortConfig::SetCTS(int cts) {
-
+    if(_port_cfg == nullptr) return;
+    sp_set_config_cts(_port_cfg, (enum sp_cts) cts);
 }
 
 int AgspPortConfig::GetDTR() {
@@ -81,7 +88,8 @@ int AgspPortConfig::GetDTR() {
 }
 
 void AgspPortConfig::SetDTR(int dtr) {
-
+    if(_port_cfg == nullptr) return;
+    sp_set_config_dtr(_port_cfg, (enum sp_dtr) dtr);
 }
 
 int AgspPortConfig::GetDSR() {
@@ -93,7 +101,8 @@ int AgspPortConfig::GetDSR() {
 }
 
 void AgspPortConfig::SetDSR(int dsr) {
-
+    if(_port_cfg == nullptr) return;
+    sp_set_config_dsr(_port_cfg, (enum sp_dsr) dsr);
 }
 
 int AgspPortConfig::GetXonXoff() {
@@ -105,18 +114,31 @@ int AgspPortConfig::GetXonXoff() {
 }
 
 void AgspPortConfig::SetXonXoff(int xonxoff) {
-
+    if(_port_cfg == nullptr) return;
+    sp_set_config_xon_xoff(_port_cfg, (enum sp_xonxoff) xonxoff);
 }
 
 void AgspPortConfig::SetFlowControl(int flowcontrol) {
-
+    if(_port_cfg == nullptr) return;
+    sp_set_config_flowcontrol(_port_cfg, (enum sp_flowcontrol) flowcontrol);
 }
 
 AgspPortConfig::AgspPortConfig() {
     id = -1;
     _port_cfg = nullptr;
+    do_check(sp_new_config(&_port_cfg));
+}
+
+AgspPortConfig::AgspPortConfig(struct sp_port *port) {
+    id = -1;
+    _port_cfg = nullptr;
+    do_check(sp_new_config(&_port_cfg));
+    do_check(sp_get_config(port, _port_cfg));
 }
 
 AgspPortConfig::~AgspPortConfig() {
-
+    if(_port_cfg != nullptr)
+    {
+        sp_free_config(_port_cfg);
+    }
 }

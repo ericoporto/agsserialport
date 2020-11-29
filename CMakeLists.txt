@@ -29,6 +29,8 @@ add_library(agsserialport SHARED
     agsserialport/SerializationHelper.cpp
     agsserialport/agsserialport_ash.h
     agsserialport/agsserialport.cpp
+    agsserialport/AgspSaneCheck.h
+    agsserialport/AgspSaneCheck.cpp
     agsserialport/AgspPort.h
     agsserialport/AgspPort.cpp
     agsserialport/AgspPortConfig.h

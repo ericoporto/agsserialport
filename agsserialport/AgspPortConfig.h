@@ -17,10 +17,11 @@
 
 class AgspPortConfig {
 private:
-    struct sp_port_config * _port_cfg;
+    sp_port_config* _port_cfg;
 public:
     int id;
     AgspPortConfig();
+    AgspPortConfig(struct sp_port * port);
     ~AgspPortConfig();
 
     int GetBaudrate();
