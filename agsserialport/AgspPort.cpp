@@ -136,3 +136,12 @@ int AgspPortInterface::Dispose(const char *address, bool force) {
     agspPort = nullptr;
     return (1);
 }
+
+int AgspPortInterface::Serialize(const char* address, char* buffer, int bufsize)
+{
+    return 0;
+}
+
+void AgspPortReader::Unserialize(int key, const char* serializedData, int dataSize)
+{
+}
