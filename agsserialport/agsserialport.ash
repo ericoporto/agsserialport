@@ -12,7 +12,7 @@ enum AGSP_ReturnType
 	/// A memory allocation failed while executing the operation.
 	eAGSP_ERR_MEM = -3,
 	/// The requested operation is not supported by this system or device.
-	eAGSP_ERR_SUPP = -4
+	eAGSP_ERR_SUPP = -4,
 	/// The requested operation was executed in an uninitialized or null object;
 	eAGSP_ERR_NULLPTR = -10
 };
@@ -254,7 +254,7 @@ builtin managed struct AGSP
   /// Refreshes Port Names list
   import static void UpdatePortNames();
   /// Get the number of serial ports.
-  import static attribute int PortNamesCount; // $AUTOCOMPLETESTATICONLY$ 
+  import static readonly attribute int PortNamesCount; // $AUTOCOMPLETESTATICONLY$ 
   import static int get_PortNamesCount(); // $AUTOCOMPLETEIGNORE$
   /// Get the OS-specific name of a serial port by index.
   import static readonly attribute String PortNames[]; // $AUTOCOMPLETESTATICONLY$ 
