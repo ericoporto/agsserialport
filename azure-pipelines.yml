@@ -46,7 +46,7 @@ steps:
 - task: CopyFiles@2
   condition: eq( variables['Agent.OS'], 'Linux' )
   inputs:
-    sourceFolder: '$(Build.SourcesDirectory)/agsserialport'
+    sourceFolder: '$(Build.SourcesDirectory)/build/'
     contents: 'libagsserialport.so'
     targetFolder: $(Build.ArtifactStagingDirectory)
 
