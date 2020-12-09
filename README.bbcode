@@ -1,0 +1,96 @@
+[b][size=14pt]agsserialport[/size][/b]  [color=gray][b] version 0.1.0 [/b][/color]
+
+[img]https://dev.azure.com/ericoporto/agsserialport/_apis/build/status/ericoporto.agsserialport?branchName=main[/img]
+
+[url=https://github.com/ericoporto/agsserialport/releases/download/0.1.0/agsserialport.dll]Get Latest Release [b]agsserialport.dll[/b][/url] | [url=https://github.com/ericoporto/agsserialport/releases/download/0.1.0/libagsserialport.so][b]libagsserialport.so[/b][/url] | [url=https://github.com/ericoporto/agsserialport/releases/download/0.1.0/libagsserialport.dylib][b]libagsserialport.dylib[/b][/url] | [url=https://github.com/ericoporto/agsserialport]GitHub Repo[/url] | [b][url=https://github.com/ericoporto/agsserialport/releases/download/0.1.0/agsserialport_demo_windows.zip]Demo Windows[/url][/b] | [b][url=https://github.com/ericoporto/agsserialport/releases/download/0.1.0/agsserialport_demo_linux.tar.gz]Demo Linux[/url][/b]
+
+[img]https://user-images.githubusercontent.com/2244442/101570700-b694c900-39b5-11eb-95f5-99e029d8c4f0.png[/img]
+
+A very untested Serial Port library for Adventure Game Studio. I made this for myself to play with Arduino at home, and I will eventually document this better and fix it's bugs.
+
+For now, here is an example that continuously reads incoming data on the serial port. Reading and Writing operations are non-blocking.
+
+[code=ags]// room script file
+SP_Port* _port;
+
+function room_RepExec()
+{
+  if(_port == null) return;
+  String read = "";
+
+  
+  for(int byte_count = _port.WaitingBytesRead;byte_count>0;byte_count = _port.WaitingBytesRead)
+  {
+    if(byte_count > 0)
+    {
+      String piece_read = _port.Read(0);
+      if(piece_read!=null) read = read.Append(piece_read);
+    }
+  }
+  
+  if(!String.IsNullOrEmpty(read)) Display(read); 
+}
+
+function room_AfterFadeIn()
+{
+  // Port HAS to be open before configuring
+  if(_port.Open(eAGSP_Mode_Read) == eAGSP_OK)
+  {
+    if(_port.SetBaudrate(9600) != eAGSP_OK) Display("Error setting baudrate");
+    if(_port.SetBits(8) != eAGSP_OK) Display("Error setting bits");
+    if(_port.SetParity(eAGSP_Parity_None) != eAGSP_OK) Display("Error setting parity");
+    if(_port.SetStopBits(1) != eAGSP_OK) Display("Error setting stop bits");
+    if(_port.SetFlowControl(eAGSP_FlowControl_None) != eAGSP_OK) Display("Error setting flow control");
+  }
+  else 
+  {
+    _port = null;
+  }
+}
+
+function room_Load()
+{
+  String portname;
+  for(int i=0; i<AGSP.PortNamesCount; i++)
+  {
+    portname = AGSP.PortNames[i];
+  }
+
+  if(portname == null || portname.Length < 1)
+  {
+    return;
+  }
+    
+  _port = SP_Port.Create(portname);
+  
+}
+
+function hGlowingOrb_AnyClick()
+{
+  if(_port == null) return;
+  
+  Display(String.Format("Serial Port Name: %s\nDescription: %s\n", _port.Name, _port.Description));
+}
+[/code]
+
+The library has three main structs: 
+[list]
+[li][b][tt]AGSP [/tt][/b] - For listing available serial ports by name (named COM1, COM2, ... on Windows)[/li]
+[li][b][tt]SP_Port[/tt][/b] - Represents a serial port Allows opening, configuring and reading and writing data on a serial port[/li]
+[li][b][tt]SP_PortConfig[/tt][/b] - Holds a port configuration, can be retrieved from a serial port or applyied to a serial port.[/li]
+[/list]
+
+A SP_Port has no default configuration, you always have to set a configuration after opening a port before reading or writing to it. In any operation that returns a value, a negative value is an error.
+
+Here is a very simple Arduino example that can be used to verify you are reading correctly.
+
+[code=c]void setup()                    // run once, when the sketch starts
+{
+  Serial.begin(9600);           // set up Serial library at 9600 bps, Arduino defaults to 8 bits, 1 Stop Bit, No Parity and No Flow Control
+}
+
+void loop()                       // run over and over again
+{
+  Serial.println("Hello serial world!");  // prints hello with ending line break
+  delay(5000);
+}[/code]
