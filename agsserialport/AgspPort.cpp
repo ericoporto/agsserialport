@@ -39,6 +39,9 @@ AgspPortConfig* AgspPort::GetConfig() {
 const char *AgspPort::Read(int count) {
     if(_port == nullptr) return nullptr;
     if(count < 0) return nullptr;
+    int bytesWaiting = sp_input_waiting(_port);
+    if (bytesWaiting <= 0) return nullptr;
+    if (count == 0) count = bytesWaiting - 1;
     char* buffer = new char[count+1];
     if(sp_nonblocking_read(_port, buffer, count) == SP_OK)
     {

@@ -294,7 +294,9 @@ int AgspPort_SetConfig(AgspPort* self, AgspPortConfig* agspPortConfig)
 
 const char * AgspPort_Read(AgspPort* self, int count)
 {
-    return engine->CreateScriptString(self->Read(count));
+    const char * result = self->Read(count);
+    if (result == nullptr) return nullptr;
+    return engine->CreateScriptString(result);
 }
 
 int AgspPort_Write(AgspPort* self, const char * buffer)
