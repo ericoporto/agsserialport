@@ -409,8 +409,8 @@ void AGS_EngineStartup(IAGSEngine *lpEngine)
     engine->RegisterScriptFunction("AGSP::UpdatePortNames^0", (void*)AgspPort_UpdatePortNames);
 
     engine->RegisterScriptFunction("SP_Port::Create^1", (void*)AgspPort_Create);
-    engine->RegisterScriptFunction("SP_Port::AgspPort_Open^1", (void*)AgspPort_Open);
-    engine->RegisterScriptFunction("SP_Port::AgspPort_Close^0", (void*)AgspPort_Close);
+    engine->RegisterScriptFunction("SP_Port::Open^1", (void*)AgspPort_Open);
+    engine->RegisterScriptFunction("SP_Port::Close^0", (void*)AgspPort_Close);
     engine->RegisterScriptFunction("SP_Port::get_Name", (void*)AgspPort_get_Name);
     engine->RegisterScriptFunction("SP_Port::get_Description", (void*)AgspPort_get_Description);
     engine->RegisterScriptFunction("SP_Port::get_Transport", (void*)AgspPort_get_Transport);
