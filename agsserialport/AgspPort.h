@@ -13,10 +13,12 @@
 #include "plugin/agsplugin.h"
 #include "libserialport.h"
 #include "AgspPortConfig.h"
+#include <string>
 
 class AgspPort {
 private:
     sp_port* _port;
+    std::string _buffer;
 public :
     int id;
     AgspPort(const char * portname);
