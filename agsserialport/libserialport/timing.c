@@ -17,7 +17,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifdef VCX_CONFIG
+#include "vcx_config.h"
+#else
 #include "config.h"
+#endif // VCX_CONFIG
+
 #include "libserialport_internal.h"
 
 SP_PRIV void time_get(struct time *time)

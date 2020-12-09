@@ -107,7 +107,7 @@ AgspPort::AgspPort(const char *portname) {
 AgspPort::~AgspPort() {
     if(_port != nullptr)
     {
-        void* discard;
+        void* discard = nullptr;
         if(sp_get_port_handle(_port, discard) == SP_OK)
         {
             sp_close(_port);

@@ -278,8 +278,13 @@ extern "C" {
 
 #include <stddef.h>
 
+#ifdef VCX_CONFIG
+#include "vcx_libserialport_export.h"
+#include "vcx_libserialport_version.h"
+#else
 #include <libserialport_export.h>
 #include <libserialport_version.h>
+#endif // VCX_CONFIG
 
 /** Return values. */
 enum sp_return {

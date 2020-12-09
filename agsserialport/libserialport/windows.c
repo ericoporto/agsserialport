@@ -18,7 +18,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifdef VCX_CONFIG
+#include "vcx_config.h"
+#else
 #include "config.h"
+#endif // VCX_CONFIG
+
 #include "libserialport_internal.h"
 
 /* USB path is a string of at most 8 decimal numbers < 128 separated by dots. */

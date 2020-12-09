@@ -36,7 +36,11 @@
 #define _POSIX_C_SOURCE 199309L
 #endif
 
+#ifdef VCX_CONFIG
+#include "vcx_config.h"
+#else
 #include "config.h"
+#endif // VCX_CONFIG
 #include "libserialport.h"
 
 #include <string.h>

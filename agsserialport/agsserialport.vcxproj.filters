@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="libserialport">
+      <UniqueIdentifier>{ec2915b9-01b4-443e-920f-e062c8b848ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libserialport\libserialport_headers">
+      <UniqueIdentifier>{e3850c0f-5b0d-47a6-943f-757c2a81bd45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libserialport\libserialport_sources">
+      <UniqueIdentifier>{c7e98354-da33-4112-811e-eecf582c307b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="agsp_globalvars.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AgsNumberInterface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SerializationHelper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="agsserialport_ash.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AgspSaneCheck.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AgspPort.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AgspPortConfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="libserialport\libserialport.h">
+      <Filter>libserialport\libserialport_headers</Filter>
+    </ClInclude>
+    <ClInclude Include="libserialport\vcx_libserialport_export.h">
+      <Filter>libserialport\libserialport_headers</Filter>
+    </ClInclude>
+    <ClInclude Include="libserialport\libserialport_internal.h">
+      <Filter>libserialport\libserialport_headers</Filter>
+    </ClInclude>
+    <ClInclude Include="libserialport\vcx_libserialport_version.h">
+      <Filter>libserialport\libserialport_headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="SerializationHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="agsserialport.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AgspSaneCheck.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AgspPort.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AgspPortConfig.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="libserialport\serialport.c">
+      <Filter>libserialport\libserialport_sources</Filter>
+    </ClCompile>
+    <ClCompile Include="libserialport\timing.c">
+      <Filter>libserialport\libserialport_sources</Filter>
+    </ClCompile>
+    <ClCompile Include="libserialport\windows.c">
+      <Filter>libserialport\libserialport_sources</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
